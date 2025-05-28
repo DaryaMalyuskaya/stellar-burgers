@@ -1,12 +1,15 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { useDispatch, userSelectors, useSelector } from '../../services/store';
+import { updateUser } from '../../services/store/user';
+import { Preloader } from '@ui';
+import { extractError } from '../../utils/errors';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useSelector(userSelectors.selectUserData)!;
+  const request = useSelector(userSelectors.selectUpdateUserRequest);
+  const error = useSelector(userSelectors.selectUpdateUserError);
+  const dispatch = useDispatch();
 
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -22,13 +25,17 @@ export const Profile: FC = () => {
     }));
   }, [user]);
 
-  const isFormChanged =
-    formValue.name !== user?.name ||
-    formValue.email !== user?.email ||
-    !!formValue.password;
+  const isFormChanged = useMemo(
+    () =>
+      formValue.name !== user?.name ||
+      formValue.email !== user?.email ||
+      !!formValue.password,
+    [formValue, user]
+  );
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -47,15 +54,16 @@ export const Profile: FC = () => {
     }));
   };
 
-  return (
+  return request ? (
+    <Preloader />
+  ) : (
     <ProfileUI
       formValue={formValue}
       isFormChanged={isFormChanged}
       handleCancel={handleCancel}
       handleSubmit={handleSubmit}
       handleInputChange={handleInputChange}
+      updateUserError={extractError(error)}
     />
   );
-
-  return null;
 };

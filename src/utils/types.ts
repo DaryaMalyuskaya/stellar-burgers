@@ -38,3 +38,51 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+
+export type TConstructorSelection = {
+  bun: TConstructorIngredient | null;
+  ingredients: TConstructorIngredient[];
+};
+
+export type TConstructorState = {
+  items: TConstructorSelection;
+  ingredients: TIngredient[];
+  ingredientsRequest: boolean;
+  selectedIngredient: string | null;
+};
+
+export type TFeed = {
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TOrdersState = {
+  orderRequest: boolean;
+  orderError: null | unknown;
+  newOrder: TOrder | null;
+
+  history: TOrder[];
+  historyRequest: boolean;
+
+  feed: TFeed | null;
+  feedRequest: boolean;
+  feedError: null | unknown;
+
+  selectedOrderId: number | null;
+  selectedOrder: TOrder | null;
+  selectedOrderRequest: boolean;
+  selectedOrderError: null | unknown;
+};
+
+export type TUserState = {
+  isAuthChecked: boolean;
+  isAuthenticated: boolean;
+  data: null | TUser;
+  loginUserError: null | unknown;
+  loginUserRequest: boolean;
+  registerUserError: null | unknown;
+  registerUserRequest: boolean;
+  updateUserError: null | unknown;
+  updateUserRequest: boolean;
+};

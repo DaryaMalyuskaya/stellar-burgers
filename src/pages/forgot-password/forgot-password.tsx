@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { forgotPasswordApi } from '@api';
 import { ForgotPasswordUI } from '@ui-pages';
+import { extractError } from '../../utils/errors';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ export const ForgotPassword: FC = () => {
 
   return (
     <ForgotPasswordUI
-      errorText={error?.message}
+      errorText={extractError(error)}
       email={email}
       setEmail={setEmail}
       handleSubmit={handleSubmit}

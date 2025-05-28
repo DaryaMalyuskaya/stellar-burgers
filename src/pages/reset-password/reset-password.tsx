@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
+import { extractError } from '../../utils/errors';
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export const ResetPassword: FC = () => {
 
   return (
     <ResetPasswordUI
-      errorText={error?.message}
+      errorText={extractError(error)}
       password={password}
       token={token}
       setPassword={setPassword}
